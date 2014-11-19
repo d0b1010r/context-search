@@ -1,0 +1,22 @@
+{
+  "name": "context-search",
+  "version": "1.0.0",
+  "description": "Filter and highlight HTML elements by a search term",
+  "main": "context-search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidlanger/context-search.git"
+  },
+  "keywords": [
+    "browser", "search", "filter", "highlight"
+  ],
+  "author": "David Langer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidlanger/context-search/issues"
+  },
+  "homepage": "https://github.com/davidlanger/context-search"
+}
