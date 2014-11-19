@@ -1,19 +1,16 @@
-module.exports = function (control, list) {
+module.exports = function (list, term) {
 	var rows = list.querySelectorAll('.context-search--item');
-	attachEvent(control, 'keyup', function(event) {
-		var term = control.value;
-		if (term.length) {
-			term = term.toLowerCase();
-			addClass(list, 'context-search--filtered');
-			filterElements(rows, term);
-		} else {
-			removeClass(list, 'context-search--filtered');
-			var highlightElements = list.querySelectorAll('[data-original-text]');
-			for (var i = highlightElements.length - 1; i >= 0; i -= 1) {
-				removeHighlightFromText(highlightElements[i]);
-			}
+	if (term.length) {
+		term = term.toLowerCase();
+		addClass(list, 'context-search--filtered');
+		filterElements(rows, term);
+	} else {
+		removeClass(list, 'context-search--filtered');
+		var highlightElements = list.querySelectorAll('[data-original-text]');
+		for (var i = highlightElements.length - 1; i >= 0; i -= 1) {
+			removeHighlightFromText(highlightElements[i]);
 		}
-	});
+	}
 };
 
 function filterElements (rows, term) {
@@ -79,15 +76,6 @@ function removeHighlightFromText (el) {
 	var text = el.getAttribute('data-original-text');
 	el.removeAttribute('data-original-text');
 	el.innerHTML = text;
-}
-
-function attachEvent (el, event, eventListener) {
-	if (el.addEventListener) {
-		el.addEventListener(event, eventListener, false);
-	}
-	else {
-		el.attachEvent('on' + event, eventListener);
-	}
 }
 
 function addClass (el, className) {

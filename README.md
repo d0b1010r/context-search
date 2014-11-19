@@ -8,15 +8,15 @@ table by setting appropiate css.
 
 ## Exports only one interface to instantiate it:
 
-`function (control, list)`
+`function (list, term)`
 
-- _control_  is an input element (or any other) that sends
-	keyup events and has a .value property.
 - _list_ is the element which has sub items to be filtered
 	and highlighted.
+- _term_ is the search term, based on which the list will be
+	filtered
 
-Requirement is that the sub elements to be filtered have the
-class `context-search--item`. Only elements below these will
+The only other requirement is that the sub elements to be filtered
+have the class `context-search--item`. Only elements below these will
 be filtered/highlighted.
 
 ##  Uses the following classes:
