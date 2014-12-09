@@ -4,19 +4,33 @@
   "description": "Filter and highlight HTML elements by a search term",
   "main": "context-search.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/karma/bin/karma start karma.config.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/davidlanger/context-search.git"
   },
   "keywords": [
-    "browser", "search", "filter", "highlight"
+    "browser",
+    "search",
+    "filter",
+    "highlight"
   ],
   "author": "David Langer",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/davidlanger/context-search/issues"
   },
-  "homepage": "https://github.com/davidlanger/context-search"
+  "homepage": "https://github.com/davidlanger/context-search",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "karma": "^0.12.28",
+    "karma-browserify": "^1.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-fixture": "^0.2.1-1",
+    "karma-html2js-preprocessor": "^0.1.0",
+    "karma-mocha": "^0.1.10",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "^2.0.1"
+  }
 }
