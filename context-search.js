@@ -1,37 +1,37 @@
 module.exports = function (list, term) {
-	var rows = list.querySelectorAll('.context-search--item');
-	if (term.length) {
-		term = term.toLowerCase();
-		addClass(list, 'context-search--filtered');
-		filterElements(rows, term);
-	} else {
-		removeClass(list, 'context-search--filtered');
-		var highlightElements = list.querySelectorAll('[data-original-text]');
-		for (var i = highlightElements.length - 1; i >= 0; i -= 1) {
-			removeHighlightFromText(highlightElements[i]);
-		}
-	}
+    const rows = list.querySelectorAll('.context-search--item');
+    let keyWords = term.trim().toLowerCase().split(/[ ,]+/, 4).filter(Boolean);
+    if (keyWords.length && keyWords.length > 0) {
+        addClass(list, 'context-search--filtered');
+        filterElements(rows, keyWords);
+    } else {
+        removeClass(list, 'context-search--filtered');
+        const highlightElements = list.querySelectorAll('[data-original-text]');
+        for (let i = highlightElements.length - 1; i >= 0; i -= 1) {
+            removeHighlightFromText(highlightElements[i]);
+        }
+    }
 };
 
-function filterElements (rows, term) {
-	for (var i = rows.length - 1; i >= 0; i -= 1) {
-		var el = rows[i];
-		var text = el.textContent;
-		if (text) {
-			text = text.toLowerCase();
-			text = text.trim();
-			text = text.replace(/\s{2}/g, ' ');
-		}
-		if (text && text.indexOf(term) !== -1) {
-			if (highlightElement(el, term)) {
-				addClass(el, 'context-search--match');
-			} else {
-				removeClass(el, 'context-search--match');
-			}
-		} else {
-			removeClass(el, 'context-search--match');
-		}
-	}
+function filterElements (rows, terms) {
+    for (let i = rows.length - 1; i >= 0; i -= 1) {
+        const el = rows[i];
+        let text = el.textContent;
+        if (text) {
+            text = text.toLowerCase();
+            text = text.trim();
+            text = text.replace(/\s{2}/g, ' ');
+        }
+        if (terms.every(term => text && text.indexOf(term) !== -1)) {
+            if (highlightElement(el, terms[0])) {
+                addClass(el, 'context-search--match');
+            } else {
+                removeClass(el, 'context-search--match');
+            }
+        } else {
+            removeClass(el, 'context-search--match');
+        }
+    }
 }
 
 function highlightElement (el, term) {
