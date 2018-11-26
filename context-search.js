@@ -1,31 +1,27 @@
 module.exports = function (list, term) {
-	var rows = list.querySelectorAll('.context-search--item');
-	if (term.length) {
-		term = term.toLowerCase();
+	const rows = list.querySelectorAll('.context-search--item');
+	let keyWords = term.trim().toLowerCase().split(/[ ,]+/).filter(Boolean);
+	if (keyWords.length && keyWords.length > 0) {
 		addClass(list, 'context-search--filtered');
-		filterElements(rows, term);
+		filterElements(rows, keyWords);
 	} else {
 		removeClass(list, 'context-search--filtered');
-		var highlightElements = list.querySelectorAll('[data-original-text]');
-		for (var i = highlightElements.length - 1; i >= 0; i -= 1) {
+		const highlightElements = list.querySelectorAll('[data-original-text]');
+		for (let i = highlightElements.length - 1; i >= 0; i -= 1) {
 			removeHighlightFromText(highlightElements[i]);
 		}
 	}
 };
 
-function filterElements (rows, term) {
-	for (var i = rows.length - 1; i >= 0; i -= 1) {
-		var el = rows[i];
-		var text = el.textContent;
-		if (text) {
-			text = text.toLowerCase();
-			text = text.trim();
-			text = text.replace(/\s{2}/g, ' ');
-		}
-		if (text && text.indexOf(term) !== -1) {
-			if (highlightElement(el, term)) {
+function filterElements (rows, terms) {
+	for (let i = rows.length - 1; i >= 0; i -= 1) {
+		const el = rows[i];
+		let text = el.textContent;
+		text = text ? text.trim().toLowerCase().replace(/\s{2}/g, ' ') : null;
+		if (terms.every(term => text && text.indexOf(term) !== -1)) {
+			if (highlightElement(el, terms[0])) {
 				addClass(el, 'context-search--match');
-			} else {
+            } else {
 				removeClass(el, 'context-search--match');
 			}
 		} else {
@@ -35,14 +31,14 @@ function filterElements (rows, term) {
 }
 
 function highlightElement (el, term) {
-	var found = false;
+	let found = false;
 	if (!el.children.length) {
 		found = highlightText(el, term);
 	} else if (containsHighlightNode(el)) {
 		found = highlightText(el, term);
 	} else {
-		for (var i = el.children.length - 1; i >= 0; i -= 1) {
-			found = found | highlightElement(el.children[i], term);
+		for (let i = el.children.length - 1; i >= 0; i -= 1) {
+			found = found || highlightElement(el.children[i], term);
 		}
 	}
 	return found;
@@ -53,8 +49,8 @@ function containsHighlightNode (el) {
 }
 
 function highlightText (el, term) {
-	var text = el.getAttribute('data-original-text') || el.textContent;
-	var startPos = text.toLowerCase().indexOf(term);
+	let text = el.getAttribute('data-original-text') || el.textContent;
+	let startPos = text.toLowerCase().indexOf(term);
 	if (startPos !== -1) {
 		addHighlightToText(el, text, term, startPos);
 		return true;
@@ -65,15 +61,15 @@ function highlightText (el, term) {
 }
 
 function addHighlightToText (el, text, term, startPos) {
-	var before = text.slice(0,startPos);
-	var after = text.slice(startPos + term.length);
-	var between = text.slice(startPos, startPos + term.length);
+	let before = text.slice(0, startPos);
+	let after = text.slice(startPos + term.length);
+	let between = text.slice(startPos, startPos + term.length);
 	el.setAttribute('data-original-text', text);
 	el.innerHTML = before + '<span class="context-search--highlight">' + between + '</span>' + after;
 }
 
 function removeHighlightFromText (el) {
-	var text = el.getAttribute('data-original-text');
+	let text = el.getAttribute('data-original-text');
 	el.removeAttribute('data-original-text');
 	el.innerHTML = text;
 }
@@ -85,6 +81,6 @@ function addClass (el, className) {
 }
 
 function removeClass (el, className) {
-	var regex = new RegExp(className, 'g');
+	let regex = new RegExp(className, 'g');
 	el.className = el.className.replace(regex, '');
 }
